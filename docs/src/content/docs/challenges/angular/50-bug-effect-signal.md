@@ -8,7 +8,6 @@ challengeNumber: 50
 command: angular-bug-effect-signal
 sidebar:
   order: 19
-  badge: New
 ---
 
 ## Information
