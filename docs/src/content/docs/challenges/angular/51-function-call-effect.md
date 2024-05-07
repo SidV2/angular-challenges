@@ -13,11 +13,10 @@ sidebar:
 
 ## Information
 
-In this second challenge on Signal effect, we have an input select to choose what action a user will perform. When we select an action, we log the action in the console.
-We can also change the selected user.
+In this second challenge focusing on Signal effects, we've introduced an input select that allows users to choose an action. Whenever an action is selected, it is logged in the console. The interface also permits changes to the selected user.
 
-## Statement
+## Problem Statement
 
-We should log an action only when we select an action. However we log also when we change the user despite the fact that we don't listen to user changes.
+Ideally, the system should log an action only when one is specifically selected. However, we currently face an issue where changing the user also triggers a log entry, even though we do not explicitly monitor user changes.
 
-The objective of this challenge is to understand and correct the issue of too many triggers. We should log only on action changes.
+The objective of this challenge is to identify and resolve the cause of these extra triggers. We aim to ensure that logging only occurs when an action is selected.
