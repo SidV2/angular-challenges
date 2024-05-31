@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-form',
@@ -64,6 +70,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class FormComponent {
   private fb = inject(FormBuilder);
+  isSaved = output<boolean>();
 
   form = this.fb.nonNullable.group({
     name: ['', { validators: [Validators.required] }],
@@ -72,7 +79,20 @@ export class FormComponent {
     message: '',
   });
 
+  constructor() {
+    this.form.valueChanges
+      .pipe(
+        tap(() => {
+          if (this.form.touched || this.form.dirty) {
+            this.isSaved.emit(false);
+          }
+        }),
+      )
+      .subscribe();
+  }
+
   onSubmit() {
+    this.isSaved.emit(true);
     if (this.form.valid) this.form.reset();
   }
 }
