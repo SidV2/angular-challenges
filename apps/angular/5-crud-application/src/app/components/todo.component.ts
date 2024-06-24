@@ -9,19 +9,19 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { Todo } from '../models/todos';
-import { initTodos, updateTodo } from '../store/Todos/todo.actions';
+import { initTodos } from '../store/Todos/todo.actions';
 import { selectTodos } from '../store/Todos/todo.selectors';
+import { TodoItemComponent } from './todo-item/todo-item.component';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TodoItemComponent],
   template: `
     <div class="todos-container">
-      <div class="todo" *ngFor="let todo of todos()">
-        {{ todo.title }}
-        <button (click)="update(todo)">Update</button>
-      </div>
+      @for (todo of todos(); track todo.id) {
+        <app-todo-item [todo]="todo" />
+      }
     </div>
   `,
   styleUrls: ['./todos.scss'],
@@ -29,17 +29,11 @@ import { selectTodos } from '../store/Todos/todo.selectors';
 })
 export class TodoComponent implements OnInit {
   private readonly store = inject(Store);
-
   public todos: Signal<Todo[] | undefined> = toSignal(
     this.store.select(selectTodos),
   );
 
   ngOnInit(): void {
     this.store.dispatch(initTodos());
-  }
-
-  update(todo: Todo) {
-    //this.todoService.updateTodos(todo);
-    this.store.dispatch(updateTodo({ payload: todo }));
   }
 }

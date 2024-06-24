@@ -1,0 +1,9 @@
+@if(todo && (loadingStatus$ | async) === false || (loadingStatus$ | async) === null || (loadingStatus$ | async) === undefined) {
+<div class="todo-item-container">
+    <span>{{ todo?.title }}</span>
+    <button (click)="update(todo!)">Update</button>
+    <button (click)="delete(todo!)">Delete</button>
+</div>
+} @else {
+    <mat-spinner diameter="20"/>
+}

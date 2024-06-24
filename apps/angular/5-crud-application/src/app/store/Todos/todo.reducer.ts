@@ -20,15 +20,50 @@ export const todoReducer = createReducer(
       todos: action.payload,
     };
   }),
-  on(TodoActions.updateTodoSuccessful, (state, action) => {
+  on(TodoActions.updateTodo, (state, action) => {
     const todoUpdated: Todo = action.payload;
     const { todos } = state;
     const updatedTodos = todos.map((todo) =>
-      todo.id === todoUpdated.id ? { ...todoUpdated } : todo,
+      todo.id === todoUpdated.id
+        ? { ...todo, isLoading: true }
+        : { ...todo, isLoading: false },
     );
     return {
       ...state,
       todos: updatedTodos,
+    };
+  }),
+  on(TodoActions.updateTodoSuccessful, (state, action) => {
+    const todoUpdated: Todo = action.payload;
+    const { todos } = state;
+    const updatedTodos = todos.map((todo) =>
+      todo.id === todoUpdated.id
+        ? { ...todo, title: todoUpdated.title, isLoading: false }
+        : todo,
+    );
+    return {
+      ...state,
+      todos: updatedTodos,
+    };
+  }),
+  on(TodoActions.deleteTodo, (state, action) => {
+    const todoUpdated: Todo = action.payload;
+    const { todos } = state;
+    const updatedTodos = todos.map((todo) =>
+      todo.id === todoUpdated.id
+        ? { ...todo, isLoading: true }
+        : { ...todo, isLoading: false },
+    );
+    return {
+      ...state,
+      todos: updatedTodos,
+    };
+  }),
+  on(TodoActions.deleteTodoSuccessful, (state, action) => {
+    const todoToBeDeleted: Todo = action.payload;
+    return {
+      ...state,
+      todos: [...state.todos.filter((todo) => todo.id !== todoToBeDeleted.id)],
     };
   }),
 );

@@ -37,4 +37,18 @@ export class TodoEffects {
       }),
     ),
   );
+
+  deleteTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.deleteTodo),
+      switchMap((action) =>
+        this.todoService.deleteTodo(action.payload).pipe(
+          map((deletedItem: Todo) =>
+            TodoActions.deleteTodoSuccessful({ payload: deletedItem }),
+          ),
+          catchError(() => of(TodoActions.deleteTodoFailure)),
+        ),
+      ),
+    ),
+  );
 }
